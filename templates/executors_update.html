@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Список исполнителей</title>
+    <style>
+        .edit-button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 8px 12px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <h1>Список исполнителей</h1>
+    <form action="/update_executor" method="post">
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Адрес</th>
+                    <th>Номер телефона</th>
+                    <th>Имя исполнителя</th>
+                    <th>Дата рождения</th>
+                    <th>Должность</th>
+                    <th>Зарплата</th>
+                    <th>Опыт работы</th>
+                    <th>Премия за стаж</th>
+                    <th>График работы</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for executor in executors %}
+                    <tr>
+                        <td>{{ executor.ID }}</td>
+                        <td><input type="text" name="Address_{{ executor.ID }}" value="{{ executor.Address }}"></td>
+                        <td><input type="text" name="Phone_Number_{{ executor.ID }}" value="{{ executor.Phone_Number }}"></td>
+                        <td><input type="text" name="Name_{{ executor.ID }}" value="{{ executor.Name }}"></td>
+                        <td><input type="text" name="Birthday_{{ executor.ID }}" value="{{ executor.Birthday }}"></td>
+                        <td><input type="text" name="Post_{{ executor.ID }}" value="{{ executor.Post }}"></td>
+                        <td><input type="text" name="Salary_{{ executor.ID }}" value="{{ executor.Salary }}"></td>
+                        <td><input type="text" name="Work_Experience_{{ executor.ID }}" value="{{ executor.Work_Experience }}"></td>
+                        <td><input type="text" name="Seniority_Allowance_{{ executor.ID }}" value="{{ executor.Seniority_Allowance }}"></td>
+                        <td><input type="text" name="Schedule_{{ executor.ID }}" value="{{ executor.Schedule }}"></td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <br>
+        <button type="submit" class="edit-button">Сохранить изменения</button>
+    </form>
+    <br>
+    <a href="/choose_options">Назад к выбору таблицы</a>
+</body>
+</html>

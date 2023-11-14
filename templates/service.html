@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Услуги</title>
+</head>
+<body>
+    <h1>Список услуг</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Тип</th>
+                <th>Цена</th>
+                <th>Время выполнения</th>
+                <th>Предметы для замены</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for service in services %}
+                <tr>
+                    <td>{{ service.ID }}</td>
+                    <td>{{ service.Type }}</td>
+                    <td>{{ service.Price }}</td>
+                    <td>{{ service.Execution_Time }}</td>
+                    <td>{{ service.Items_to_Change }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <br>
+    <a href="/choose_options">Назад к выбору таблицы</a>
+</body>
+</html>

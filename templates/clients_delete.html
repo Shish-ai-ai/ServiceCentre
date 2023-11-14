@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Список клиентов</title>
+    <style>
+        .delete-button {
+            background-color: #f44336;
+            color: white;
+            padding: 8px 12px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <h1>Список клиентов</h1>
+    <form action="/delete_client" method="post">
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Имя клиента</th>
+                    <th>Номер автомобиля</th>
+                    <th>Марка автомобиля</th>
+                    <th>Год выпуска</th>
+                    <th>Номер телефона</th>
+                    <th>Действие</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for client in data %}
+                    <tr>
+                        <td>{{ client.ID }}</td>
+                        <td>{{ client.Name }}</td>
+                        <td>{{ client.Car_Number }}</td>
+                        <td>{{ client.Car_Mark }}</td>
+                        <td>{{ client.Car_Year }}</td>
+                        <td>{{ client.Phone_Number }}</td>
+                        <td>
+                            <input type="checkbox" name="clients_to_delete" value="{{ client.ID }}">
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <br>
+        <button type="submit" class="delete-button">Удалить выбранных клиентов</button>
+    </form>
+    <br>
+    <a href="/choose_options">Назад к выбору таблицы</a>
+</body>
+</html>

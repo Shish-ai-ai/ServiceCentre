@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Список клиентов</title>
+</head>
+<body>
+    <h1>Список клиентов</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Имя клиента</th>
+                <th>Номер автомобиля</th>
+                <th>Марка автомобиля</th>
+                <th>Год выпуска</th>
+                <th>Номер телефона</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for client in data %}
+                <tr>
+                    <td>{{ client.ID }}</td>
+                    <td>{{ client.Name }}</td>
+                    <td>{{ client.Car_Number }}</td>
+                    <td>{{ client.Car_Mark }}</td>
+                    <td>{{ client.Car_Year }}</td>
+                    <td>{{ client.Phone_Number }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <br>
+    <a href="/choose_options">Назад к выбору таблицы</a>
+</body>
+</html>
