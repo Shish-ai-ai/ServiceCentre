@@ -15,7 +15,7 @@
 </head>
 <body>
     <h1>Список исполнителей</h1>
-    <form action="/update_executor" method="post">
+    <form action="/executor_update" method="post">
         <table>
             <thead>
                 <tr>
@@ -32,7 +32,7 @@
                 </tr>
             </thead>
             <tbody>
-                {% for executor in executors %}
+                {% for executor in data %}
                     <tr>
                         <td>{{ executor.ID }}</td>
                         <td><input type="text" name="Address_{{ executor.ID }}" value="{{ executor.Address }}"></td>
@@ -44,6 +44,9 @@
                         <td><input type="text" name="Work_Experience_{{ executor.ID }}" value="{{ executor.Work_Experience }}"></td>
                         <td><input type="text" name="Seniority_Allowance_{{ executor.ID }}" value="{{ executor.Seniority_Allowance }}"></td>
                         <td><input type="text" name="Schedule_{{ executor.ID }}" value="{{ executor.Schedule }}"></td>
+                        <td>
+                            <input type="checkbox" name="edit_executor_id" value="{{ executor.ID }}">
+                        </td>
                     </tr>
                 {% endfor %}
             </tbody>
@@ -52,6 +55,6 @@
         <button type="submit" class="edit-button">Сохранить изменения</button>
     </form>
     <br>
-    <a href="/choose_options">Назад к выбору таблицы</a>
+    <a href="/">Назад к выбору таблицы</a>
 </body>
 </html>

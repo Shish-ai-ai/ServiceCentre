@@ -15,7 +15,7 @@
 </head>
 <body>
     <h1>Список клиентов</h1>
-    <form action="/update_client" method="post">
+    <form action="/client_update" method="post">
         <table>
             <thead>
                 <tr>
@@ -36,6 +36,9 @@
                         <td><input type="text" name="Car_Mark_{{ client.ID }}" value="{{ client.Car_Mark }}"></td>
                         <td><input type="text" name="Car_Year_{{ client.ID }}" value="{{ client.Car_Year }}"></td>
                         <td><input type="text" name="Phone_Number_{{ client.ID }}" value="{{ client.Phone_Number }}"></td>
+                        <td>
+                            <input type="checkbox" name="edit_client_id" value="{{ client.ID }}">
+                        </td>
                     </tr>
                 {% endfor %}
             </tbody>
@@ -44,6 +47,6 @@
         <button type="submit" class="edit-button">Сохранить изменения</button>
     </form>
     <br>
-    <a href="/choose_options">Назад к выбору таблицы</a>
+    <a href="/">Назад к выбору таблицы</a>
 </body>
 </html>
