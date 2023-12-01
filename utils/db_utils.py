@@ -32,7 +32,7 @@ class DatabaseUtils:
 
         if choice == 'client':
             # Выполняем выборку данных из таблицы ClientDb и добавляем их в список
-            for client in self.session.query(ClientDb):
+            for client in self.session.query(ClientDb).order_by(ClientDb.ID):
                 data.append({
                     "ID": client.ID,
                     "Name": client.Client_name,

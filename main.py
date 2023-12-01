@@ -10,57 +10,17 @@ my_session.create_dbsession()
 def index():
     return render_template('index.html')
 
+
 @app.route('/clients', methods=['GET', 'POST'])
 def clients():
     data = my_session.query('client')
     return render_template('clients.html', data=data)
 
+
 @app.route('/executors', methods=['GET', 'POST'])
 def executors():
     data = my_session.query('executor')
     return render_template('executors.html', executors=data)
-
-
-@app.route('/choose_options', methods=['GET', 'POST'])
-def choose_options():
-    if request.method == 'POST':
-        selected_table = request.form.get('table')
-        selected_method = request.form.get('method')
-
-        if selected_table and selected_method:
-            if selected_method == 'retrieve':  # RETRIEVE
-                if selected_table == 'client':
-                    data = my_session.query(selected_table)
-                    return render_template('clients.html', data=data)
-                elif selected_table == 'executor':
-                    data = my_session.query(selected_table)
-                    return render_template('executors.html', executors=data)
-                elif selected_table == 'service':
-                    data = my_session.query(selected_table)
-                    return render_template('service.html', services=data)
-            elif selected_method == 'insert':  # INSERT
-                if selected_table == 'client':
-                    return render_template('clients_insert.html')
-                elif selected_table == 'executor':
-                    return render_template('executors_insert.html')
-
-            elif selected_method == 'update':  # UPDATE
-                if selected_table == 'client':
-                    data = my_session.query(selected_table)
-                    return render_template('clients_update.html', data=data)
-                elif selected_table == 'executor':
-                    data = my_session.query(selected_table)
-                    return render_template('executors_update.html', executors=data)
-
-            elif selected_method == 'delete':  # DELETE
-                if selected_table == 'client':
-                    data = my_session.query(selected_table)
-                    return render_template('clients_delete.html', data=data)
-                elif selected_table == 'executor':
-                    data = my_session.query(selected_table)
-                    return render_template('executors_delete.html', executors=data)
-
-    return render_template('choose_options.html')
 
 
 @app.route('/client_insert', methods=['GET', 'POST'])
@@ -77,7 +37,6 @@ def client_insert():
         return render_template('index.html')
 
     return render_template('clients_insert.html')
-
 
 
 @app.route('/executor_insert', methods=['POST', 'GET'])
