@@ -2,8 +2,7 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <title>Список клиентов</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <title>Итог</title>
     <style>
         .edit-button {
             background-color: #2d692f;
@@ -49,6 +48,7 @@
             padding: 0px 0;
             text-align: center;
             color: #482359;
+            margin-bottom: 20px;
         }
 
         table {
@@ -116,93 +116,38 @@
             background-color: #F48E57; /* Цвет фона чекбокса при выборе */
             border-color: #F48E57; /* Цвет границы чекбокса при выборе */
         }
-
-        .pagination {
-            justify-content: center;
-            margin-top: 20px;
-        }
-
-        .page-item {
-            display: inline-block;
-            margin-right: 5px;
-        }
-
-        .page-link {
-            color: #F48E57; /* Цвет текста кнопки */
-            background-color: #482359; /* Цвет фона кнопки */
-            border: 1px solid #F48E57; /* Цвет границы кнопки */
-        }
-
-        .page-link:hover {
-            color: #482359; /* Цвет текста кнопки при наведении */
-            background-color: #F48E57; /* Цвет фона кнопки при наведении */
-            border: 1px solid #F48E57; /* Цвет границы кнопки при наведении */
-        }
-
-        .page-item.active .page-link {
-            z-index: 3;
-            color: #482359; /* Цвет текста активной кнопки */
-            background-color: #F48E57 !important; /* Цвет фона активной кнопки */
-            border: 1px solid #F48E57; /* Цвет границы активной кнопки */
-        }
-
-        /*.record-info {
-            text-align: center;
-            color: #482359;
-            margin-top: 10px;
-        }
-
-        .pagination-container {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }*/
     </style>
 </head>
 <body>
 <header>
-    <h1>Список клиентов</h1>
+    <h1>Итог</h1>
 </header>
-<form action="/delete_client" method="post">
+
+<form action="/delete_executor" method="post">
     <table>
         <thead>
         <tr>
+            <th>Service_ID</th>
+            <th>Order_ID</th>
+            <th>Итоговая цена</th>
             <th>ID</th>
-            <th>Имя клиента</th>
-            <th>Номер автомобиля</th>
-            <th>Марка автомобиля</th>
-            <th>Год выпуска</th>
-            <th>Номер телефона</th>
-            <th>Действия</th>
+            <th>Выбрать</th>
         </tr>
         </thead>
         <tbody>
-        {% for client in clients %}
-        <tr>
-            <td>{{ client.ID }}</td>
-            <td>{{ client.Name }}</td>
-            <td>{{ client.Car_Number }}</td>
-            <td>{{ client.Car_Mark }}</td>
-            <td>{{ client.Car_Year }}</td>
-            <td>{{ client.Phone_Number }}</td>
-            <td>
-                <input type="checkbox" name="clients_to_delete" value="{{ client.ID }}">
-            </td>
-        </tr>
+        {% for order_service in data %}
+            <tr>
+                <td>{{ order_service.service_ID }}</td>
+                <td>{{ order_service.order_ID }}</td>
+                <td>{{ order_service.final_price }}</td>
+                <td>{{ order_service.ID }}</td>
+                <td>
+                    <input type="checkbox" name="order_service_to_delete" value="{{ order_service.ID }}">
+                </td>
+            </tr>
         {% endfor %}
         </tbody>
     </table>
-
-    <!-- Пагинация -->
-    <div class="pagination">
-    <div class="pagination-container">
-        <span class="record-info">{{ pagination.info }}</span>
-        <div class="paginationLinks">
-            {{ pagination.links }}
-        </div>
-    </div>
-</div>
-
     <br>
     <button type="button" class="edit-button" onclick="redirectToEditPage()">Редактировать</button>
     <button type="button" class="add-button" onclick="redirectToAnotherPage()">+</button>
@@ -213,14 +158,12 @@
 
 <script>
     function redirectToAnotherPage() {
-        window.location.href = "{{ url_for('client_insert') }}";
+        window.location.href = "{{ url_for('executor_insert') }}";
     }
+
     function redirectToEditPage() {
-        window.location.href = "{{ url_for('client_update') }}";
+        window.location.href = "{{ url_for('executor_update') }}";
     }
 </script>
-<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 </body>
 </html>

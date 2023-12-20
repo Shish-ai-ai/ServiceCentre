@@ -11,10 +11,126 @@
             border-radius: 4px;
             cursor: pointer;
         }
+
+        .edit-button {
+            background-color: #2d692f;
+            color: white;
+            padding: 8px 12px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .add-button {
+            background-color: #2d692f;
+            color: white;
+            padding: 8px 12px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .delete-button {
+            background-color: #8c1007;
+            color: white;
+            padding: 8px 12px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #482359; /* Нейтральный цвет фона */
+            color: #F48E57;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        header {
+            background-color: #F48E57; /* Цвет полоски сверху */
+            width: 100%;
+            padding: 0px 0;
+            text-align: center;
+            color: #482359;
+        }
+
+        div {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        h1 {
+            margin-bottom: 20px;
+        }
+
+        p {
+            font-size: 16px;
+            line-height: 1.5;
+            margin-bottom: 20px;
+        }
+
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        li {
+            margin-bottom: 10px;
+        }
+
+        a {
+            display: inline-block;
+            padding: 10px 20px;
+            text-decoration: none;
+            color: #F48E57;
+            font-weight: bold;
+            border: 2px solid #F48E57;
+            border-radius: 5px;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        a:hover {
+            background-color: #F48E57;
+            color: #fff;
+        }
+
+        input[type="checkbox"] {
+            appearance: none;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            width: 16px;
+            height: 16px;
+            border: 2px solid #F48E57; /* Цвет границы чекбокса */
+            border-radius: 3px;
+            outline: none;
+            transition: background-color 0.3s ease, border-color 0.3s ease;
+        }
+
+        input[type="checkbox"]:checked {
+            background-color: #F48E57; /* Цвет фона чекбокса при выборе */
+            border-color: #F48E57; /* Цвет границы чекбокса при выборе */
+        }
+
+        input[type="text"] {
+            width: 200px;
+            padding: 8px;
+            margin-bottom: 10px;
+            border: 2px solid #F48E57;
+            border-radius: 5px;
+            background-color: #482359;
+            color: #F48E57;
+            transition: border-color 0.3s ease;
+        }
+
+        input[type="text"]:focus {
+            border-color: #2d692f; /* Цвет границы при фокусе */
+        }
     </style>
 </head>
 <body>
-    <h1>Список клиентов</h1>
+<header>    <h1>Список клиентов</h1>
+</header>
     <form action="/client_update" method="post">
         <table>
             <thead>

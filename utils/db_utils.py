@@ -1,7 +1,7 @@
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
-from models_sql import ClientDb, ExecutorDb, ServiceDb
+from models_sql import ClientDb, ExecutorDb, ServiceDb, OrderDb, OrderServiceDb
 
 
 class DatabaseUtils:
@@ -65,6 +65,26 @@ class DatabaseUtils:
                     "Price": service.Price,
                     "Execution_Time": service.Execution_time,
                     "Items_to_Change": service.Items_to_change
+                })
+        elif choice == 'order':
+            # Выполняем выборку данных из таблицы ServiceDb и добавляем их в список
+            for order in self.session.query(OrderDb):
+                data.append({
+                    "ID": order.ID,
+                    "Service_ID": order.Service_ID,
+                    "Client_ID": order.Client_ID,
+                    "Executor_ID": order.Executor_ID,
+                    "Order_time": order.Order_time,
+                    "execution_time": order.execution_time
+                })
+        elif choice == 'order_service':
+            # Выполняем выборку данных из таблицы ServiceDb и добавляем их в список
+            for order_service in self.session.query(OrderServiceDb):
+                data.append({
+                    "service_ID": order_service.service_ID,
+                    "order_ID": order_service.order_ID,
+                    "final_price": order_service.final_price,
+                    "ID": order_service.ID
                 })
         else:
             data = []  # Если введен неверный выбор, создаем пустой список данных

@@ -1,73 +1,181 @@
 <!DOCTYPE html>
-<html>
+<html lang="ru">
 <head>
-    <title>Исполнители</title>
+    <meta charset="UTF-8">
+    <title>Список исполнителей</title>
     <style>
-        .edit-button, .add-button, .delete-button {
-            background-color: #4CAF50;
+        .edit-button {
+            background-color: #2d692f;
             color: white;
             padding: 8px 12px;
             border: none;
             border-radius: 4px;
             cursor: pointer;
         }
+
+        .add-button {
+            background-color: #2d692f;
+            color: white;
+            padding: 8px 12px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
         .delete-button {
-            background-color: #f44336;
+            background-color: #8c1007;
+            color: white;
+            padding: 8px 12px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #482359; /* Нейтральный цвет фона */
+            color: #F48E57;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        header {
+            background-color: #F48E57; /* Цвет полоски сверху */
+            width: 100%;
+            padding: 0px 0;
+            text-align: center;
+            color: #482359;
+            margin-bottom: 20px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th, td {
+            border: 1px solid #F48E57;
+            padding: 10px;
+            text-align: center;
+        }
+
+        th {
+            background-color: #482359;
+            color: #F48E57;
+        }
+
+        tbody tr:nth-child(even) {
+            background-color: #482359;
+        }
+
+        a {
+            text-decoration: none;
+            color: #F48E57;
+            font-weight: bold;
+            border: 2px solid #F48E57;
+            border-radius: 5px;
+            padding: 10px 20px;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        a:hover {
+            background-color: #F48E57;
+            color: #fff;
+        }
+
+        button {
+            margin-top: 10px;
+            border: 2px solid #F48E57;
+            border-radius: 5px;
+            padding: 10px 20px;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #F48E57;
+            color: #fff;
+        }
+
+        input[type="checkbox"] {
+            appearance: none;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            width: 16px;
+            height: 16px;
+            border: 2px solid #F48E57; /* Цвет границы чекбокса */
+            border-radius: 3px;
+            outline: none;
+            transition: background-color 0.3s ease, border-color 0.3s ease;
+        }
+
+        input[type="checkbox"]:checked {
+            background-color: #F48E57; /* Цвет фона чекбокса при выборе */
+            border-color: #F48E57; /* Цвет границы чекбокса при выборе */
         }
     </style>
 </head>
 <body>
+<header>
     <h1>Список исполнителей</h1>
-    <form action="/delete_executor" method="post">
+</header>
+
+<form action="/delete_executor" method="post">
     <table>
         <thead>
-            <tr>
-                <th>ID</th>
-                <th>Адрес</th>
-                <th>Номер телефона</th>
-                <th>Имя исполнителя</th>
-                <th>Дата рождения</th>
-                <th>Должность</th>
-                <th>Зарплата</th>
-                <th>Опыт работы</th>
-                <th>Премия за стаж</th>
-                <th>График работы</th>
-            </tr>
+        <tr>
+            <th>ID</th>
+            <th>Адрес</th>
+            <th>Номер телефона</th>
+            <th>Имя исполнителя</th>
+            <th>Дата рождения</th>
+            <th>Должность</th>
+            <th>Зарплата</th>
+            <th>Опыт работы</th>
+            <th>Премия за стаж</th>
+            <th>График работы</th>
+            <th>Выбрать</th>
+        </tr>
         </thead>
         <tbody>
-            {% for executor in executors %}
-                <tr>
-                    <td>{{ executor.ID }}</td>
-                    <td>{{ executor.Address }}</td>
-                    <td>{{ executor.Phone_Number }}</td>
-                    <td>{{ executor.Name }}</td>
-                    <td>{{ executor.Birthday }}</td>
-                    <td>{{ executor.Post }}</td>
-                    <td>{{ executor.Salary }}</td>
-                    <td>{{ executor.Work_Experience }}</td>
-                    <td>{{ executor.Seniority_Allowance }}</td>
-                    <td>{{ executor.Schedule }}</td>
-                    <td>
-                        <input type="checkbox" name="executors_to_delete" value="{{ executor.ID }}">
-                    </td>
-                </tr>
-            {% endfor %}
+        {% for executor in executors %}
+            <tr>
+                <td>{{ executor.ID }}</td>
+                <td>{{ executor.Address }}</td>
+                <td>{{ executor.Phone_Number }}</td>
+                <td>{{ executor.Name }}</td>
+                <td>{{ executor.Birthday }}</td>
+                <td>{{ executor.Post }}</td>
+                <td>{{ executor.Salary }}</td>
+                <td>{{ executor.Work_Experience }}</td>
+                <td>{{ executor.Seniority_Allowance }}</td>
+                <td>{{ executor.Schedule }}</td>
+                <td>
+                    <input type="checkbox" name="executors_to_delete" value="{{ executor.ID }}">
+                </td>
+            </tr>
+        {% endfor %}
         </tbody>
     </table>
     <br>
     <button type="button" class="edit-button" onclick="redirectToEditPage()">Редактировать</button>
     <button type="button" class="add-button" onclick="redirectToAnotherPage()">+</button>
     <button type="submit" class="delete-button">Удалить</button>
-    </form>
-    <br>
-    <a href="/">Назад к выбору таблицы</a>
-</body>
+</form>
+<br>
+<a href="/" class="back-button">Назад к выбору таблицы</a>
+
 <script>
     function redirectToAnotherPage() {
         window.location.href = "{{ url_for('executor_insert') }}";
     }
+
     function redirectToEditPage() {
         window.location.href = "{{ url_for('executor_update') }}";
     }
 </script>
+</body>
 </html>

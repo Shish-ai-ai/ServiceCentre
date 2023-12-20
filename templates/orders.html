@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Список услуг</title>
+    <title>Список заказов</title>
 </head>
 <style>
     .edit-button {
@@ -111,7 +111,7 @@
 
     .pagination {
         justify-content: center;
-        margin-top: 0px;
+        margin-top: 20px;
     }
 
     .page-item {
@@ -123,6 +123,10 @@
         color: #F48E57; /* Цвет текста кнопки */
         background-color: #482359; /* Цвет фона кнопки */
         border: 1px solid #F48E57; /* Цвет границы кнопки */
+        padding: 6px 12px;
+        text-decoration: none;
+        border-radius: 4px;
+        transition: background-color 0.3s ease, color 0.3s ease;
     }
 
     .page-link:hover {
@@ -136,18 +140,6 @@
         color: #482359; /* Цвет текста активной кнопки */
         background-color: #F48E57 !important; /* Цвет фона активной кнопки */
         border: 1px solid #F48E57; /* Цвет границы активной кнопки */
-    }
-
-    .record-info {
-        text-align: center;
-        color: #482359;
-        margin-top: 10px;
-    }
-
-    .pagination-container {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
     }
 
     table {
@@ -184,31 +176,61 @@
 </style>
 <body>
 <header>
-    <h1>Список услуг</h1>
+    <h1>Список заказов</h1>
 </header>
-<table>
-    <thead>
-    <tr>
-        <th>ID</th>
-        <th>Тип</th>
-        <th>Цена</th>
-        <th>Время выполнения</th>
-        <th>Предметы для замены</th>
-    </tr>
-    </thead>
-    <tbody>
-    {% for service in services %}
+<form action="/delete_orders" method="post">
+    <table>
+        <thead>
         <tr>
-            <td>{{ service.ID }}</td>
-            <td>{{ service.Type }}</td>
-            <td>{{ service.Price }}</td>
-            <td>{{ service.Execution_Time }}</td>
-            <td>{{ service.Items_to_Change }}</td>
+            <th>ID</th>
+            <th>ID услуги</th>
+            <th>ID клиента</th>
+            <th>ID исполнителя</th>
+            <th>Время заказа</th>
+            <th>Время выполнения</th>
+            <th>Действия</th>
         </tr>
-    {% endfor %}
-    </tbody>
-</table>
+        </thead>
+        <tbody>
+        {% for order in orders %}
+        <tr>
+            <td>{{ order.ID }}</td>
+            <td>{{ order.Service_ID }}</td>
+            <td>{{ order.Client_ID }}</td>
+            <td>{{ order.Executor_ID }}</td>
+            <td>{{ order.Order_time }}</td>
+            <td>{{ order.execution_time }}</td>
+            <td>
+                <input type="checkbox" name="orders_to_delete" value="{{ order.ID }}">
+            </td>
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    <!-- Пагинация -->
+    <div class="pagination">
+        <div class="pagination-container">
+            <span class="record-info">{{ pagination.info }}</span>
+            <div class="paginationLinks">
+                {{ pagination.links }}
+            </div>
+        </div>
+    </div>
+    <br>
+    <button type="button" class="edit-button" onclick="redirectToEditPage()">Редактировать</button>
+    <button type="button" class="add-button" onclick="redirectToAnotherPage()">+</button>
+    <button type="submit" class="delete-button">Удалить</button>
+</form>
 <br>
 <a href="/">Назад к выбору таблицы</a>
+<script>
+    function redirectToAnotherPage() {
+        window.location.href = "{{ url_for('order_insert') }}";
+    }
+    function redirectToEditPage() {
+        window.location.href = "{{ url_for('order_update') }}";
+    }
+
+</script>
 </body>
 </html>

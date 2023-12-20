@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Client Data</title>
+    <title>Order Data</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -118,21 +118,20 @@
             background-color: #F48E57;
             color: #fff;
         }
-
     </style>
 </head>
 <body>
-<header><h1>Client Data</h1></header>
+<header>
+    <h1>Order Data</h1>
+</header>
+<form action="/order_insert" method="POST">
+    <input type="text" name="Service_ID" placeholder="Service ID">
+    <input type="text" name="Client_ID" placeholder="Client ID">
+    <input type="text" name="Executor_ID" placeholder="Executor ID">
+    <input type="text" name="Order_time" placeholder="Order Time">
+    <input type="text" name="Execution_time" placeholder="Execution Time">
 
-<form action="/client_insert" method="POST">
-    <!-- Ваш код для формы, включая поля для ввода данных -->
-    <input type="text" name="Name" placeholder="Name">
-    <input type="text" name="Car_Number" placeholder="Car Number">
-    <input type="text" name="Car_Mark" placeholder="Car Mark">
-    <input type="text" name="Car_Year" placeholder="Car Year">
-    <input type="text" name="Phone_Number" placeholder="Phone Number">
-
-    <input type="submit" value="Отправить">
+    <input type="submit" value="Submit">
 </form>
 </body>
 </html>

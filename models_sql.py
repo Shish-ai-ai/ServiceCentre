@@ -1,6 +1,5 @@
-from sqlalchemy.orm import declarative_base
-from sqlalchemy import Column, Integer, String, BigInteger, DATETIME,\
-    SmallInteger, Numeric, Date, ForeignKey
+from sqlalchemy.orm import declarative_base, relationship
+from sqlalchemy import Column, Integer, String, BigInteger, DATETIME, SmallInteger, Numeric, Date, ForeignKey
 
 Base = declarative_base()
 
@@ -14,6 +13,7 @@ class ClientDb(Base):
     Car_mark = Column(String(45))
     Car_year = Column(SmallInteger)
     Phone_number = Column(String(45))
+    # orders = relationship("OrderDb", back_populates="client", foreign_keys="[OrderDb.Client_ID]")
 
 
 class ExecutorDb(Base):
@@ -29,26 +29,21 @@ class ExecutorDb(Base):
     Work_experience = Column(Integer)
     Seniority_allowance = Column(Integer)
     Schedule = Column(String)
-
-
-class OrderServiceDb(Base):
-    __tablename__ = "order-service_db"
-    __table_args__ = {"schema": "University"}
-    service_id = Column(BigInteger, ForeignKey('service_db.id'))
-    order_id = Column(BigInteger, ForeignKey('order_db.id'))
-    final_price = Column(Integer)
-    id = Column(BigInteger, primary_key=True)
+    # orders = relationship("OrderDb", back_populates="executor", foreign_keys="[OrderDb.Executor_ID]")
 
 
 class OrderDb(Base):
     __tablename__ = "order_db"
     __table_args__ = {"schema": "University"}
-    id = Column(BigInteger, primary_key=True)
-    service_id = Column(BigInteger, ForeignKey('service_db.id'))
-    order_id = Column(BigInteger, ForeignKey('order_db.id'))
-    executor_id = Column(BigInteger, ForeignKey('executor_db.id'))
-    order_time = Column(DATETIME)
+    ID = Column(BigInteger, primary_key=True)
+    Service_ID = Column(BigInteger, ForeignKey('service_db.ID'))
+    Client_ID = Column(BigInteger, ForeignKey('client_db.ID'))
+    Executor_ID = Column(BigInteger, ForeignKey('executor_db.ID'))
+    Order_time = Column(DATETIME)
     execution_time = Column(DATETIME)
+    # client = relationship("ClientDb", back_populates="orders", foreign_keys=[Client_ID])
+    # service = relationship("ServiceDb", back_populates="orders", foreign_keys=[Service_ID])
+    # executor = relationship("ExecutorDb", back_populates="orders", foreign_keys=[Executor_ID])
 
 
 class ServiceDb(Base):
@@ -59,4 +54,13 @@ class ServiceDb(Base):
     Price = Column(Integer)
     Execution_time = Column(DATETIME)
     Items_to_change = Column(String)
+    # orders = relationship("OrderDb", back_populates="service", foreign_keys="OrderDb.Service_ID")
 
+
+class OrderServiceDb(Base):
+    __tablename__ = "order_service_db"
+    __table_args__ = {"schema": "University"}
+    service_ID = Column(BigInteger, ForeignKey('service_db.ID'))
+    order_ID = Column(BigInteger, ForeignKey('order_db.ID'))
+    final_price = Column(Integer)
+    ID = Column(BigInteger, primary_key=True)

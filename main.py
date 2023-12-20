@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request, url_for, redirect
 from utils.db_utils import DatabaseUtils
+from flask_paginate import Pagination, get_page_args
 
 app = Flask(__name__)
 my_session = DatabaseUtils("postgresql://postgres:1332@localhost/serviceCentre")
@@ -14,13 +15,40 @@ def index():
 @app.route('/clients', methods=['GET', 'POST'])
 def clients():
     data = my_session.query('client')
-    return render_template('clients.html', data=data)
+    # Параметры пагинации
+    page, per_page, offset = get_page_args(page_parameter='page', per_page_parameter='per_page')
+    pagination = Pagination(page=page, per_page=10, total=len(data), css_framework='bootstrap4')
+
+    # Получение данных для текущей страницы
+    clients_to_show = data[offset: offset + per_page]
+    return render_template('clients.html', clients=clients_to_show, pagination=pagination)
 
 
 @app.route('/executors', methods=['GET', 'POST'])
 def executors():
     data = my_session.query('executor')
     return render_template('executors.html', executors=data)
+
+
+@app.route('/service', methods=['GET', 'POST'])
+def service():
+    data = my_session.query('service')
+    return render_template('service.html', services=data)
+@app.route('/order_service', methods=['GET', 'POST'])
+def order_service():
+    data = my_session.query('order_service')
+    return render_template('order_service.html', data=data)
+
+
+@app.route('/order', methods=['GET', 'POST'])
+def order():
+    data = my_session.query('order')
+    page, per_page, offset = get_page_args(page_parameter='page', per_page_parameter='per_page')
+    pagination = Pagination(page=page, per_page=10, total=len(data), css_framework='bootstrap4')
+
+    # Получение данных для текущей страницы
+    orders_to_show = data[offset: offset + per_page]
+    return render_template('orders.html', orders=orders_to_show, pagination=pagination)
 
 
 @app.route('/client_insert', methods=['GET', 'POST'])
@@ -37,6 +65,22 @@ def client_insert():
         return render_template('index.html')
 
     return render_template('clients_insert.html')
+
+
+@app.route('/order_insert', methods=['GET', 'POST'])
+def order_insert():
+    if request.method == 'POST':
+        data = {
+            'Name': request.form.get('Name'),
+            'Car_Number': request.form.get('Car_Number'),
+            'Car_Mark': request.form.get('Car_Mark'),
+            'Car_Year': request.form.get('Car_Year'),
+            'Phone_Number': request.form.get('Phone_Number')
+        }
+        my_session.insert('order', data)
+        return render_template('index.html')
+
+    return render_template('order_insert.html')
 
 
 @app.route('/executor_insert', methods=['POST', 'GET'])
@@ -104,6 +148,29 @@ def client_update():
         return render_template('index.html')
 
     return render_template('clients_update.html', data=data)
+
+
+@app.route('/order_update', methods=['GET', 'POST'])
+def order_update():
+    data = my_session.query('order')
+
+    if request.method == 'POST':
+        # Получаем ID клиента из кнопки "Сохранить изменения"
+        client_id_to_update = request.form.get('edit_order_id')
+
+        # Получаем данные для обновления из полей ввода
+        updated_data = {
+            'Name': request.form.get(f'Name_{client_id_to_update}'),
+            'Car_Number': request.form.get(f'Car_Number_{client_id_to_update}'),
+            'Car_Mark': request.form.get(f'Car_Mark_{client_id_to_update}'),
+            'Car_Year': request.form.get(f'Car_Year_{client_id_to_update}'),
+            'Phone_Number': request.form.get(f'Phone_Number_{client_id_to_update}')
+        }
+
+        my_session.update('order', client_id_to_update, updated_data)
+        return render_template('index.html')
+
+    return render_template('order_update.html', data=data)
 
 
 @app.route('/executor_update', methods=['POST', 'GET'])
