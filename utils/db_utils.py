@@ -27,6 +27,91 @@ class DatabaseUtils:
     def get_selected_table(self):
         return self.selected_table
 
+    def filter_by_mark(self, mark):
+        data = []
+        if mark == 'GMC':
+            # Выполняем выборку данных из таблицы ClientDb и добавляем их в список
+            for client in self.session.query(ClientDb).filter_by(Car_mark='GMC'):
+                data.append({
+                    "ID": client.ID,
+                    "Name": client.Client_name,
+                    "Car_Number": client.Car_number,
+                    "Car_Mark": client.Car_mark,
+                    "Car_Year": client.Car_year,
+                    "Phone_Number": client.Phone_number
+                })
+        elif mark == 'Volkswagen':
+            for client in self.session.query(ClientDb).filter_by(Car_mark='Volkswagen'):
+                data.append({
+                    "ID": client.ID,
+                    "Name": client.Client_name,
+                    "Car_Number": client.Car_number,
+                    "Car_Mark": client.Car_mark,
+                    "Car_Year": client.Car_year,
+                    "Phone_Number": client.Phone_number
+                })
+        elif mark == 'Toyota':
+            for client in self.session.query(ClientDb).filter_by(Car_mark='Toyota'):
+                data.append({
+                    "ID": client.ID,
+                    "Name": client.Client_name,
+                    "Car_Number": client.Car_number,
+                    "Car_Mark": client.Car_mark,
+                    "Car_Year": client.Car_year,
+                    "Phone_Number": client.Phone_number
+                })
+        elif mark == 'Ford':
+            for client in self.session.query(ClientDb).filter_by(Car_mark='Ford'):
+                data.append({
+                    "ID": client.ID,
+                    "Name": client.Client_name,
+                    "Car_Number": client.Car_number,
+                    "Car_Mark": client.Car_mark,
+                    "Car_Year": client.Car_year,
+                    "Phone_Number": client.Phone_number
+                })
+        elif mark == 'Infiniti':
+            for client in self.session.query(ClientDb).filter_by(Car_mark='Infiniti'):
+                data.append({
+                    "ID": client.ID,
+                    "Name": client.Client_name,
+                    "Car_Number": client.Car_number,
+                    "Car_Mark": client.Car_mark,
+                    "Car_Year": client.Car_year,
+                    "Phone_Number": client.Phone_number
+                })
+        return data
+
+    def search(self, search_query):
+        data = []
+        results = []
+        for client in self.session.query(ClientDb).order_by(ClientDb.ID):
+            data.append({
+                "ID": client.ID,
+                "Name": client.Client_name,
+                "Car_Number": client.Car_number,
+                "Car_Mark": client.Car_mark,
+                "Car_Year": client.Car_year,
+                "Phone_Number": client.Phone_number
+            })
+
+            for client_data in data:
+                # Проверяем, совпадает ли search_query с именем клиента
+                if search_query.lower() in client_data['Name'].lower() and client_data not in results:
+                    results.append(client_data)
+                    break
+                elif search_query.lower() in client_data['Car_Mark'].lower() and client_data not in results:
+                    results.append(client_data)
+                    break
+                elif str(search_query) in str(client_data['Car_Year']) and client_data not in results:
+                    results.append(client_data)
+                    break
+                elif search_query.lower() in client_data['Car_Mark'].lower() and client_data not in results:
+                    results.append(client_data)
+                    break
+
+        return results
+
     def query(self, choice):
         data = []  # Создаем пустой список данных
 
@@ -118,7 +203,6 @@ class DatabaseUtils:
             self.session.add(executor)  # Добавляем исполнителя в сессию
         self.session.commit()  # Выполняем коммит изменений в базе данных
 
-
     def delete(self, choice, id_to_delete):
         # Функция для удаления данных по указанному ID
         if choice == 'client':
@@ -162,4 +246,3 @@ class DatabaseUtils:
             executor_to_update.Seniority_allowance = updated_data['Seniority_Allowance']
             executor_to_update.Schedule = updated_data['Schedule']
             self.session.commit()
-

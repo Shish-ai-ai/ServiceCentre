@@ -1,10 +1,11 @@
-from flask import Flask, render_template, request, url_for, redirect
+from flask import Flask, render_template, request, url_for, redirect, jsonify
 from utils.db_utils import DatabaseUtils
 from flask_paginate import Pagination, get_page_args
 
 app = Flask(__name__)
 my_session = DatabaseUtils("postgresql://postgres:1332@localhost/serviceCentre")
 my_session.create_dbsession()
+clients_data = my_session.query('client')
 
 
 @app.route('/', methods=['GET'])
@@ -15,40 +16,50 @@ def index():
 @app.route('/clients', methods=['GET', 'POST'])
 def clients():
     data = my_session.query('client')
-    # Параметры пагинации
+    amount = len(data)
+
     page, per_page, offset = get_page_args(page_parameter='page', per_page_parameter='per_page')
     pagination = Pagination(page=page, per_page=10, total=len(data), css_framework='bootstrap4')
 
-    # Получение данных для текущей страницы
     clients_to_show = data[offset: offset + per_page]
-    return render_template('clients.html', clients=clients_to_show, pagination=pagination)
+    return render_template('clients.html', clients=clients_to_show, pagination=pagination, amount=amount)
 
 
 @app.route('/executors', methods=['GET', 'POST'])
 def executors():
     data = my_session.query('executor')
-    return render_template('executors.html', executors=data)
+    amount = len(data)
+
+    return render_template('executors.html', executors=data, amount=amount)
 
 
 @app.route('/service', methods=['GET', 'POST'])
 def service():
     data = my_session.query('service')
-    return render_template('service.html', services=data)
+    amount = len(data)
+
+    return render_template('service.html', services=data, amount=amount)
+
+
 @app.route('/order_service', methods=['GET', 'POST'])
 def order_service():
     data = my_session.query('order_service')
-    return render_template('order_service.html', data=data)
+    amount = len(data)
+
+    return render_template('order_service.html', data=data, amount=amount)
 
 
 @app.route('/order', methods=['GET', 'POST'])
 def order():
     data = my_session.query('order')
+    amount = len(data)
+
     page, per_page, offset = get_page_args(page_parameter='page', per_page_parameter='per_page')
     pagination = Pagination(page=page, per_page=10, total=len(data), css_framework='bootstrap4')
 
     # Получение данных для текущей страницы
     orders_to_show = data[offset: offset + per_page]
-    return render_template('orders.html', orders=orders_to_show, pagination=pagination)
+    return render_template('orders.html', orders=orders_to_show, pagination=pagination, amount=amount)
 
 
 @app.route('/client_insert', methods=['GET', 'POST'])
@@ -61,12 +72,20 @@ def client_insert():
             'Car_Year': request.form.get('Car_Year'),
             'Phone_Number': request.form.get('Phone_Number')
         }
-        my_session.insert('client', data)
-        return render_template('index.html')
+        if is_digit(data['Car_Year']):
+            my_session.insert('client', data)
+            return render_template('index.html')
+
+        return render_template('clients_insert.html', error_message='Некорректный год')
 
     return render_template('clients_insert.html')
 
-
+def is_digit(value):
+    try:
+        int(value)
+        return True
+    except ValueError:
+        return False
 @app.route('/order_insert', methods=['GET', 'POST'])
 def order_insert():
     if request.method == 'POST':
@@ -198,6 +217,46 @@ def executor_update():
         return render_template('index.html')
 
     return render_template('executors_update.html', data=data)
+
+
+@app.route('/search', methods=['GET'])
+def search():
+    # Получите значение поискового запроса из параметра запроса
+    search_query = request.args.get('query', '')
+
+    data = my_session.search(search_query)
+
+    return render_template('clients_search.html', clients=data)
+
+
+@app.route('/search_GMC', methods=['GET'])
+def search_GMC():
+    data = my_session.filter_by_mark('GMC')
+    return render_template('clients_filtered.html', clients=data)
+
+
+@app.route('/search_Volkswagen', methods=['GET'])
+def search_Volkswagen():
+    data = my_session.filter_by_mark('Volkswagen')
+    return render_template('clients_filtered.html', clients=data)
+
+
+@app.route('/search_Toyota', methods=['GET'])
+def search_Toyota():
+    data = my_session.filter_by_mark('Toyota')
+    return render_template('clients_filtered.html', clients=data)
+
+
+@app.route('/search_Ford', methods=['GET'])
+def search_Ford():
+    data = my_session.filter_by_mark('Ford')
+    return render_template('clients_filtered.html', clients=data)
+
+
+@app.route('/search_Infiniti', methods=['GET'])
+def search_Infiniti():
+    data = my_session.filter_by_mark('Infiniti')
+    return render_template('clients_filtered.html', clients=data)
 
 
 if __name__ == '__main__':
