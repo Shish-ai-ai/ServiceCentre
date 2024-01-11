@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request, url_for, redirect, jsonify
 from utils.db_utils import DatabaseUtils
 from flask_paginate import Pagination, get_page_args
+from models_sql import OrderServiceDb
 
 app = Flask(__name__)
 my_session = DatabaseUtils("postgresql://postgres:1332@localhost/serviceCentre")
@@ -43,7 +44,7 @@ def service():
 
 @app.route('/order_service', methods=['GET', 'POST'])
 def order_service():
-    data = my_session.query('order_service')
+    data = my_session.query_prikol()
     amount = len(data)
 
     return render_template('order_service.html', data=data, amount=amount)

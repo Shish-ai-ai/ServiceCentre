@@ -246,3 +246,42 @@ class DatabaseUtils:
             executor_to_update.Seniority_allowance = updated_data['Seniority_Allowance']
             executor_to_update.Schedule = updated_data['Schedule']
             self.session.commit()
+
+    def query_prikol(self):
+        data = []
+        service_data = []
+        order_service_data = []
+
+        for order_service in self.session.query(OrderServiceDb):
+            order_service_data.append(order_service.order_ID)
+            order_service_data.append(order_service.final_price)
+            order_service_data.append(order_service.ID)
+        for service in self.session.query(ServiceDb):
+            service_data.append(service.Type)
+
+        data.append({
+            "Type": service_data[0],
+            "order_ID": order_service_data[0],
+            "final_price": order_service_data[1],
+            "ID": order_service_data[2]
+        })
+        data.append({
+            "Type": service_data[1],
+            "order_ID": order_service_data[3],
+            "final_price": order_service_data[4],
+            "ID": order_service_data[5]
+        })
+        data.append({
+            "Type": service_data[2],
+            "order_ID": order_service_data[6],
+            "final_price": order_service_data[7],
+            "ID": order_service_data[8]
+        })
+        data.append({
+            "Type": service_data[3],
+            "order_ID": order_service_data[9],
+            "final_price": order_service_data[10],
+            "ID": order_service_data[11]
+        })
+
+        return data

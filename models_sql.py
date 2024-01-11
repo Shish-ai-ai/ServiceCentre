@@ -35,10 +35,11 @@ class ExecutorDb(Base):
 class OrderDb(Base):
     __tablename__ = "order_db"
     __table_args__ = {"schema": "University"}
+    __bind_key__ = "University"
     ID = Column(BigInteger, primary_key=True)
-    Service_ID = Column(BigInteger, ForeignKey('service_db.ID'))
-    Client_ID = Column(BigInteger, ForeignKey('client_db.ID'))
-    Executor_ID = Column(BigInteger, ForeignKey('executor_db.ID'))
+    Service_ID = Column(ForeignKey('service_db.ID'))
+    Client_ID = Column(ForeignKey('client_db.ID'))
+    Executor_ID = Column(ForeignKey('executor_db.ID'))
     Order_time = Column(DATETIME)
     execution_time = Column(DATETIME)
     # client = relationship("ClientDb", back_populates="orders", foreign_keys=[Client_ID])
@@ -49,6 +50,7 @@ class OrderDb(Base):
 class ServiceDb(Base):
     __tablename__ = "service_db"
     __table_args__ = {"schema": "University"}
+    __bind_key__ = "University"
     ID = Column(BigInteger, primary_key=True)
     Type = Column(String(45))
     Price = Column(Integer)
@@ -60,7 +62,9 @@ class ServiceDb(Base):
 class OrderServiceDb(Base):
     __tablename__ = "order_service_db"
     __table_args__ = {"schema": "University"}
-    service_ID = Column(BigInteger, ForeignKey('service_db.ID'))
-    order_ID = Column(BigInteger, ForeignKey('order_db.ID'))
+    __bind_key__ = "University"
+    service_ID = Column(ForeignKey('University.service_db.ID'))
+    order_ID = Column(ForeignKey('University.order_db.ID'))
     final_price = Column(Integer)
     ID = Column(BigInteger, primary_key=True)
+    service = relationship("ServiceDb")
